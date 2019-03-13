@@ -1,19 +1,8 @@
-"""
-
-    добейтесь 100% покртыия кода тестами
-    используйте unittest.mock для замены реального обращения к API
-    предоставьте отчет о покрытии в виде директории с html файлами
-    файл README.md с описанием шагов для запуска
-    файл result с командами и результатами запуска
-    файл *.py с функцией и тестами
-    нет замечаний от flake8
-"""
 from unittest.mock import patch
 import pytest
 import urllib.request
 import json
 
-# $#python -m pytest --cov=scrapy  --cov  issue-05.py
 API_URL = 'http://worldclockapi.com/api/json/utc/now'
 
 YMD_SEP = '-'
@@ -60,7 +49,7 @@ def test_get_what_is_year_now():
 #     exp_json = dict(currentDateTime='')
 #     with pytest.raises(IndexError):
 #         with patch.object(json, 'load', return_value=exp_json):
-#             year = what_is_year_now()
+#             what_is_year_now()
 
 
 def test_what_is_year_now_valuee_error():
@@ -74,7 +63,7 @@ def test_what_is_year_now_valuee_error():
 #     exp_json = dict()
 #     with pytest.raises(KeyError):
 #         with patch.object(json, 'load', return_value=exp_json):
-#             year = what_is_year_now()
+#             what_is_year_now()
 
 
 def test_get_what_is_year_now_r():

@@ -1,0 +1,15 @@
+============================= test session starts ==============================
+platform linux -- Python 3.7.2, pytest-4.3.0, py-1.8.0, pluggy-0.9.0
+rootdir: /home/zombiebober/PycharmProjects/untitled/03_test/issue-05, inifile:
+plugins: xdist-1.26.1, forked-1.0.2, cov-2.6.1
+collected 3 items
+
+issue-05.py ...                                                          [100%]
+
+----------- coverage: platform linux, python 3.7.2-final-0 -----------
+Name          Stmts   Miss  Cover
+---------------------------------
+issue-05.py      38      0   100%
+
+
+========================== 3 passed in 39.52 seconds ===========================

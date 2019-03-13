@@ -49,7 +49,3 @@ class TestFitTransform(unittest.TestCase):
     def test_exception(self):
         with self.assertRaises(TypeError):
             fit_transform()
-
-
-if __name__ == "__main__":
-    unittest.main()

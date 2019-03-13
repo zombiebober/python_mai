@@ -1,5 +1,3 @@
-import pytest
-
 LETTER_TO_MORSE = {
     'A': '.-', 'B': '-...', 'C': '-.-.',
     'D': '-..', 'E': '.', 'F': '..-.',
@@ -24,21 +22,19 @@ MORSE_TO_LETTER = {
 }
 
 
-def decode(morse_message: str) -> str:
+def encode(message: str) -> str:
     """
-    Декодирует строку из азбуки Морзе в английский
+    Кодирует строку в соответсвие с таблицей азбуки Морзе
+    >>> encode("SOS")
+    '...    ---   ...'
+    >>> encode(1)
+    Traceback (most recent call last):
+        ...
+    TypeError: 'int' object is not iterable
+    >>> encode("ASDY") # doctest: +ELLIPSIS
+    '.-...-.--'
     """
-    decoded_letters = [
-        MORSE_TO_LETTER[letter] for letter in morse_message.split()
+    encoded_signs = [
+        LETTER_TO_MORSE[letter] for letter in message
     ]
-
-    return ''.join(decoded_letters)
-
-
-@pytest.mark. parametrize("test_decode_input,decode_expected", [
-    ("... --- ...", "SOS"),
-    ("", ""),
-    ("--   .-   ..   ..--- ----- .---- ---..", "MAI2018")
-])
-def test_decode(test_decode_input, decode_expected):
-    assert decode(test_decode_input) == decode_expected
+    return ' '.join(encoded_signs)
