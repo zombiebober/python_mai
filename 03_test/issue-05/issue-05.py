@@ -1,7 +1,7 @@
-from unittest.mock import patch
 import pytest
 import urllib.request
 import json
+from unittest.mock import patch, MagicMock
 
 API_URL = 'http://worldclockapi.com/api/json/utc/now'
 
@@ -36,47 +36,30 @@ def what_is_year_now() -> int:
 
     return int(year_str)
 
-
 def test_get_what_is_year_now():
-    exp_json = dict(currentDateTime='2018-03-30')
-    exp_json = """{currentDateTime"}"""
+    exp_json = dict(currentDateTime='2018-01-01')
+    exp_json = json.dumps(exp_json)
     exp_year = 2018
-    with patch.object(urllib.request, 'urlopen', return_value=exp_json):
+    with patch('urllib.request.urlopen') as mock_urlopen:
+        mock_urlopen.return_value.__enter__.return_value.read.return_value =  exp_json
         year = what_is_year_now()
-    assert year == exp_year
-lesson_str = """{
-            "title": "python",
-            "class" : "2",
-            "location": {
-                "address": "город Москва, Лесная, 7",
-                "metro_stations": ["Белорусская"]
-                }
-            }"""
-
-# def test_what_is_year_now_ie():
-#     exp_json = dict(currentDateTime='')
-#     with pytest.raises(IndexError):
-#         with patch.object(json, 'load', return_value=exp_json):
-#             what_is_year_now()
+    assert exp_year == year
 
 
 def test_what_is_year_now_valuee_error():
     exp_json = dict(currentDateTime='2015235236')
+    exp_json = json.dumps(exp_json)
     with pytest.raises(ValueError):
-        with patch.object(json, 'load', return_value=exp_json):
+        with patch('urllib.request.urlopen') as mock_urlopen:
+            mock_urlopen.return_value.__enter__.return_value.read.return_value = exp_json
             what_is_year_now()
-
-
-# def test_what_is_year_now_ke():
-#     exp_json = dict()
-#     with pytest.raises(KeyError):
-#         with patch.object(json, 'load', return_value=exp_json):
-#             what_is_year_now()
 
 
 def test_get_what_is_year_now_r():
     exp_json = dict(currentDateTime='21.03.2017')
-    year = 2017
-    with patch.object(json, 'load', return_value=exp_json):
-        json_year = what_is_year_now()
-    assert year == json_year
+    exp_json = json.dumps(exp_json)
+    exp_year = 2017
+    with patch('urllib.request.urlopen') as mock_urlopen:
+        mock_urlopen.return_value.__enter__.return_value.read.return_value = exp_json
+        year = what_is_year_now()
+    assert year == exp_year
