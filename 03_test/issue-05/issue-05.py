@@ -39,11 +39,19 @@ def what_is_year_now() -> int:
 
 def test_get_what_is_year_now():
     exp_json = dict(currentDateTime='2018-03-30')
+    exp_json = """{currentDateTime"}"""
     exp_year = 2018
-    with patch.object(json, 'load', return_value=exp_json):
+    with patch.object(urllib.request, 'urlopen', return_value=exp_json):
         year = what_is_year_now()
     assert year == exp_year
-
+lesson_str = """{
+            "title": "python",
+            "class" : "2",
+            "location": {
+                "address": "город Москва, Лесная, 7",
+                "metro_stations": ["Белорусская"]
+                }
+            }"""
 
 # def test_what_is_year_now_ie():
 #     exp_json = dict(currentDateTime='')
