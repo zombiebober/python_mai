@@ -1,0 +1,19 @@
+============================= test session starts ==============================
+platform linux -- Python 3.7.3, pytest-4.3.1, py-1.8.0, pluggy-0.9.0 -- /usr/bin/python
+cachedir: .pytest_cache
+rootdir: /home/zombiebober/PycharmProjects/python_univ/python_mai/06_orm, inifile:
+plugins: xdist-1.26.1, raises-0.10, forked-1.0.2, cov-2.6.1
+collecting ... collected 10 items
+
+simple_orm.py::test_orm PASSED                                           [ 10%]
+simple_orm.py::TestField::test_set PASSED                                [ 20%]
+simple_orm.py::TestField::test_get PASSED                                [ 30%]
+simple_orm.py::TestCharField::test_no_parametr PASSED                    [ 40%]
+simple_orm.py::TestCharField::test_min_length PASSED                     [ 50%]
+simple_orm.py::TestCharField::test_max_length PASSED                     [ 60%]
+simple_orm.py::TestCharField::test_type PASSED                           [ 70%]
+simple_orm.py::TestIntegerField::test_normal_job PASSED                  [ 80%]
+simple_orm.py::TestIntegerField::test_min_value PASSED                   [ 90%]
+simple_orm.py::TestIntegerField::test_type PASSED                        [100%]
+
+========================== 10 passed in 1.61 seconds ===========================
