@@ -91,6 +91,10 @@ class Model(metaclass=ModelMeta):
                 raise KeyError
         return meta
 
+    def create(self):
+        meta = self._prepare_insert(self.__dict__)
+        self.__class__.create_colums(colums=meta)
+
 
 class Database():
     @abc.abstractmethod
@@ -140,9 +144,6 @@ class SqliteDatabase(Database):
         # sql = "INSERT INTO {} ({}) VALUES  ({});".format(name_table, arg, arg)
         # arg = [k for k in colums.keys()]+[str(v) for v in colums.values()]
         # self.cursor.execute(sql, arg)
-        arg = ','.join([k for k in colums.keys()])
-        val = ','.join([str(k) for k in colums.values()])
-        val = [(k) for k in colums.values()]
         sql = "INSERT INTO {}({}) VALUES  ({});".format(name_table, ','.join([k for k in colums.keys()]),
                                                         ','.join(["\'{}\'".format(k) for k in colums.values()]))
         self.cursor.execute(sql)
@@ -157,25 +158,100 @@ class SqliteDatabase(Database):
         self.conn.close()
 
 
-db = SqliteDatabase(":memory:")
+def test_orm():
+    db = SqliteDatabase(":memory:")
+
+    class BaseModel(Model):
+        pass
+
+        class Meta:
+            database = db
+
+    class Advert(BaseModel):
+        title = CharField(max_length=180)
+        price = IntegerField(min_value=0)
+
+    db.connect()
+    db.create_tables([Advert])
+
+    Advert.create(title='iPhone X', price=100)
+    adverts = Advert.select()
+    assert str(adverts[0]) == "('iPhone X', 100)"
+    db.close()
 
 
-class BaseModel(Model):
+class TestField():
+    class Book:
+        price = Field()
+
+    def test_set(self):
+        book = TestField.Book()
+        exp = 5
+        book.price = exp
+        assert book.__dict__["price"] == exp
+
+    def test_get(self):
+        book = TestField.Book()
+        exp = 5
+        book.__dict__["price"] = exp
+        assert book.price == exp
+
+
+class TestCharField():
+    class Book:
+        name = CharField(min_length=6, max_length=9)
+
+    def test_no_parametr(self):
+        book = TestCharField.Book()
+        name = "Hendrix"
+        book.author = name
+        assert book.author == name
+
+    def test_min_length(self):
+        book = TestCharField.Book()
+        name = 'piper'
+        with pytest.raises(ValueError):
+            book.name = name
+
+    def test_max_length(self):
+        book = TestCharField.Book()
+        name = "richard hendricks pied piper"
+        with pytest.raises(ValueError):
+            book.name = name
+
+    def test_type(self):
+        book = TestCharField.Book()
+        name = 124
+        with pytest.raises(TypeError):
+            book.name = name
+
+
+class TestIntegerField:
+    class Book:
+        price = IntegerField(min_value=250)
+
+    def test_normal_job(self):
+        book = TestIntegerField.Book()
+        price = 500
+        book.price = price
+        assert book.price == price
+
+    def test_min_value(self):
+        book = TestIntegerField.Book()
+        price = -50
+        with pytest.raises(ValueError):
+            book.price = price
+
+    def test_type(self):
+        book = TestIntegerField.Book()
+        price = "asdsa"
+        with pytest.raises(TypeError):
+            book.price = price
+
+
+class TestSqliteDatabase():
     pass
 
-    class Meta:
-        database = db
 
-
-class Advert(BaseModel):
-    title = CharField(max_length=180)
-    price = IntegerField(min_value=0)
-
-
-db.connect()
-db.create_tables([Advert])
-
-Advert.create(title='iPhone X', price=100)
-adverts = Advert.select()
-assert str(adverts[0]) == "('iPhone X', 100)"
-db.close()
+class TestModel():
+    pass

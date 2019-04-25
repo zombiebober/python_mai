@@ -135,5 +135,5 @@ def islice(iterable: Iterable, start, stop):
     >>> islice(foo, -3, None)
     [7, 8, 9]
     """
-    it,iterable = itertools.tee(iterable)
-    return list(it)[slice(start,stop)]
+    it, iterable = itertools.tee(iterable)
+    return list(it)[slice(start, stop)]
